@@ -67,6 +67,12 @@ namespace Speechmatics.Realtime.Client
 
             await msg.Send(_wsClient, _api.CancelToken);
 
+            /*
+             * If the request is for > messageBlockSize bytes,  we send multiple binary messages.
+             * 
+             * If the message looks like XXXX|XXXX|XXXX|XX then it will be sent as three blocks of XXXX
+             * followed by a single block of size XX.
+             */
             if (data.Count > messageBlockSize)
             {
                 for (var offset = 0; offset < data.Count / messageBlockSize; offset += messageBlockSize)

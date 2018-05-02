@@ -53,6 +53,10 @@ namespace Speechmatics.Realtime.Client
         /// True if SSL errors should be ignored (default false)
         /// </summary>
         public bool Insecure { get; set; }
+        /// <summary>
+        /// Bandwidth limit in bytes / second
+        /// </summary>
+        public int RateLimit { get; set; }
 
         /// <summary>
         /// Constructor
