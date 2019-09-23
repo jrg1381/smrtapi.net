@@ -85,9 +85,6 @@
     <Compile Include="..\SmRtAPI\Messages\AddTranscriptMessage.cs">
       <Link>Messages\AddTranscriptMessage.cs</Link>
     </Compile>
-    <Compile Include="..\SmRtAPI\Messages\AudioFormatSubMessage.cs">
-      <Link>Messages\AudioFormatSubMessage.cs</Link>
-    </Compile>
     <Compile Include="..\SmRtAPI\Messages\BaseMessage.cs">
       <Link>Messages\BaseMessage.cs</Link>
     </Compile>
@@ -112,8 +109,14 @@
     <Compile Include="..\SmRtAPI\Messages\SetRecognitionConfigMessage.cs">
       <Link>Messages\SetRecognitionConfigMessage.cs</Link>
     </Compile>
+    <Compile Include="..\SmRtAPI\Messages\V1\AudioFormatSubMessage.cs">
+      <Link>Messages\V1\AudioFormatSubMessage.cs</Link>
+    </Compile>
     <Compile Include="..\SmRtAPI\Messages\V1\StartRecognitionMessage.cs">
       <Link>Messages\V1\StartRecognitionMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\SmRtAPI\Messages\V2\AudioFormatSubMessage.cs">
+      <Link>Messages\V2\AudioFormatSubMessage.cs</Link>
     </Compile>
     <Compile Include="..\SmRtAPI\Messages\V2\StartRecognitionMessage.cs">
       <Link>Messages\V2\StartRecognitionMessage.cs</Link>

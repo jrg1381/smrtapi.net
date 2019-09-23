@@ -1,6 +1,8 @@
+using System.ComponentModel;
+using Newtonsoft.Json;
 using Speechmatics.Realtime.Client.Enumerations;
 
-namespace Speechmatics.Realtime.Client.Messages
+namespace Speechmatics.Realtime.Client.Messages.V1
 {
     /// <summary>
     /// Audio format
@@ -24,6 +26,7 @@ namespace Speechmatics.Realtime.Client.Messages
         /// <summary>
         /// Sample rate of audio in Hz
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int sample_rate { get; }
         /// <summary>
         /// Type of audio (e.g. 'raw', 'file' - see docs)
@@ -32,6 +35,7 @@ namespace Speechmatics.Realtime.Client.Messages
         /// <summary>
         /// Encoding (e.g. pcm_s16le)
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string encoding { get; }
     }
 }

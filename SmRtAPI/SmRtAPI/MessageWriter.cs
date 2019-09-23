@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Speechmatics.Realtime.Client.Enumerations;
 using Speechmatics.Realtime.Client.Interfaces;
 using Speechmatics.Realtime.Client.Messages;
-using StartRecognitionMessage = Speechmatics.Realtime.Client.Messages.V2.StartRecognitionMessage;
-using V1 = Speechmatics.Realtime.Client.Messages;
+using V2 = Speechmatics.Realtime.Client.Messages.V2;
+using V1 = Speechmatics.Realtime.Client.Messages.V1;
 
 namespace Speechmatics.Realtime.Client
 {
@@ -106,11 +106,11 @@ namespace Speechmatics.Realtime.Client
 
         private async Task StartRecognition()
         {
-            var audioFormat = new AudioFormatSubMessage(_api.Configuration.AudioFormat,
+            var audioFormat = new V2.AudioFormatSubMessage(_api.Configuration.AudioFormat,
                 _api.Configuration.AudioFormatEncoding,
                 _api.Configuration.SampleRate);
             // var msg = new V1.StartRecognitionMessage(audioFormat, _api.Configuration.Model, OutputFormat.Json, "rt_test");
-            var msg = new StartRecognitionMessage(audioFormat, _api.Configuration.Model);
+            var msg = new V2.StartRecognitionMessage(audioFormat, _api.Configuration.Model);
             await msg.Send(_wsClient, _api.CancelToken);
         }
 
