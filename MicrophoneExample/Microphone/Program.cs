@@ -16,7 +16,7 @@ namespace Speechmatics.Realtime.Microphone
             return JsonConvert.SerializeObject(obj);
         }
 
-        private static string RtUrl => "wss://192.168.128.30:9000/";
+        private static string RtUrl => "wss://staging.realtimeappliance.speechmatics.io:9000/";
 
         // ReSharper disable once UnusedParameter.Local
         public static void Main(string[] args)
@@ -44,7 +44,7 @@ namespace Speechmatics.Realtime.Microphone
                     var config = new SmRtApiConfig("en", 44100, AudioFormatType.Raw, AudioFormatEncoding.PcmS16Le)
                     {
                         AddTranscriptCallback = Console.Write,
-                        AddPartialTranscriptMessageCallback = s => Console.Write("* " + s.transcript),
+                        // AddPartialTranscriptMessageCallback = s => Console.Write("* " + s.transcript),
                         ErrorMessageCallback = s => Console.WriteLine(ToJson(s)),
                         WarningMessageCallback = s => Console.WriteLine(ToJson(s)),
                         Insecure = true,

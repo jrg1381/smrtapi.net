@@ -112,8 +112,11 @@
     <Compile Include="..\SmRtAPI\Messages\SetRecognitionConfigMessage.cs">
       <Link>Messages\SetRecognitionConfigMessage.cs</Link>
     </Compile>
-    <Compile Include="..\SmRtAPI\Messages\StartRecognitionMessage.cs">
-      <Link>Messages\StartRecognitionMessage.cs</Link>
+    <Compile Include="..\SmRtAPI\Messages\V1\StartRecognitionMessage.cs">
+      <Link>Messages\V1\StartRecognitionMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\SmRtAPI\Messages\V2\StartRecognitionMessage.cs">
+      <Link>Messages\V2\StartRecognitionMessage.cs</Link>
     </Compile>
     <Compile Include="..\SmRtAPI\Messages\WarningMessage.cs">
       <Link>Messages\WarningMessage.cs</Link>
@@ -138,5 +141,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

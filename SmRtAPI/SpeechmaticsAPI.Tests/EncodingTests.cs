@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Speechmatics.Realtime.Client;
 using Speechmatics.Realtime.Client.Enumerations;
 using Speechmatics.Realtime.Client.Messages;
+using Speechmatics.Realtime.Client.Messages.V1;
 
 namespace SpeechmaticsAPI.Tests
 {

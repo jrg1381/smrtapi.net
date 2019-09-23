@@ -20,7 +20,7 @@ namespace DemoApp
         {
             get
             {
-                return "wss://staging.realtimeappliance.speechmatics.io:9000/";
+                return "wss://staging.realtimeappliance.speechmatics.io:9000/v2";
                 var host = Environment.GetEnvironmentVariable("TEST_HOST") ?? "api.rt.speechmatics.io";
                 return host.StartsWith("wss://") ? host : $"wss://{host}:9000/";
             }
