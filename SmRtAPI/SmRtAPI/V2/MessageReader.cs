@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Speechmatics.Realtime.Client.Enumerations;
 using Speechmatics.Realtime.Client.Messages;
 using Speechmatics.Realtime.Client.V2.Interfaces;
 using Speechmatics.Realtime.Client.V2.Messages;
@@ -54,7 +53,7 @@ namespace Speechmatics.Realtime.Client.V2
             var messageAsString = Encoding.UTF8.GetString(subset.ToArray());
             var jsonObject = JObject.Parse(messageAsString);
 
-            Trace.WriteLine("55: " + messageAsString);
+            Trace.WriteLine("ProcessMessage: " + messageAsString);
 
             switch (jsonObject.Value<string>("message"))
             {
@@ -64,7 +63,7 @@ namespace Speechmatics.Realtime.Client.V2
                     _recognitionStarted.Set();
                     break;
                 }
-                case "DataAdded":
+                case "AudioAdded":
                 {
                     // Log the ack
                     Interlocked.Increment(ref _ackedSequenceNumbers);

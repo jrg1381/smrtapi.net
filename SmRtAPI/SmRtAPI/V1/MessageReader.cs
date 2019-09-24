@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Speechmatics.Realtime.Client.Enumerations;
 using Speechmatics.Realtime.Client.Messages;
 using Speechmatics.Realtime.Client.V1.Interfaces;
 using Speechmatics.Realtime.Client.V1.Messages;
@@ -54,7 +53,7 @@ namespace Speechmatics.Realtime.Client.V1
             var messageAsString = Encoding.UTF8.GetString(subset.ToArray());
             var jsonObject = JObject.Parse(messageAsString);
 
-            Trace.WriteLine("55: " + messageAsString);
+            Trace.WriteLine("ProcessMessage: " + messageAsString);
 
             switch (jsonObject.Value<string>("message"))
             {
@@ -72,7 +71,7 @@ namespace Speechmatics.Realtime.Client.V1
                 }
                 case "AddTranscript":
                 {
-                    string transcript = jsonObject.Value<string>("results");
+                    string transcript = jsonObject.Value<string>("transcript");
                     _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
                     _api.Configuration.AddTranscriptCallback?.Invoke(transcript);
                     break;
@@ -102,7 +101,7 @@ namespace Speechmatics.Realtime.Client.V1
                 }
                 default:
                 {
-                    Trace.WriteLine(messageAsString);
+                    Trace.WriteLine("Default: "+ messageAsString);
                     break;
                 }
             }

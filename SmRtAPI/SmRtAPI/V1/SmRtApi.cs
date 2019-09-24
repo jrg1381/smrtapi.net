@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Speechmatics.Realtime.Client;
 using Speechmatics.Realtime.Client.V1.Config;
 using Speechmatics.Realtime.Client.V1.Interfaces;
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Speechmatics.Realtime.Client.Enumerations;
 using Speechmatics.Realtime.Client.Messages;
 using Speechmatics.Realtime.Client.V2.Interfaces;
 using Speechmatics.Realtime.Client.V2.Messages;

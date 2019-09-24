@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Speechmatics.Realtime.Client.V2;
@@ -30,6 +31,8 @@ namespace DemoApp
         // ReSharper disable once UnusedParameter.Local
         public static void Main(string[] args)
         {
+            var start = DateTime.Now;
+            Debug.WriteLine("Starting at {0}", start);
             var builder = new StringBuilder();
             var language = Environment.GetEnvironmentVariable("LANG") ?? "en";
             Console.WriteLine(language);
@@ -46,14 +49,13 @@ namespace DemoApp
                     {
                         OutputLocale = "en-GB",
                         AddTranscriptCallback = s => builder.Append(s),
-                        AddTranscriptMessageCallback = s => Console.WriteLine(ToJson(s.results)),
+                        AddTranscriptMessageCallback = s => Console.WriteLine(ToJson(s)),
                         //AddPartialTranscriptMessageCallback = s => Console.WriteLine(ToJson(s)),
                         ErrorMessageCallback = s => Console.WriteLine(ToJson(s)),
                         WarningMessageCallback = s => Console.WriteLine(ToJson(s)),
                         CustomDictionaryPlainWords = new[] {"speechmagic"},
                         CustomDictionarySoundsLikes = new Dictionary<string, IEnumerable<string>>(),
                         Insecure = true,
-                        // DynamicTranscriptConfiguration = new DynamicTranscriptConfiguration(true, 10, 0.2, 0.4)
                     };
 
                     // We can do this here, or earlier. It's not used until .Run() is called on the API object.
@@ -74,6 +76,8 @@ namespace DemoApp
                 }
             }
 
+            var finish = DateTime.Now;
+            Debug.WriteLine("Starting at {0} -- {1}", finish, finish-start);
             Console.ReadLine();
         }
     }
