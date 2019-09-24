@@ -4,6 +4,8 @@ using NAudio.Wave;
 using Newtonsoft.Json;
 using Speechmatics.Realtime.Client;
 using Speechmatics.Realtime.Client.Enumerations;
+using Speechmatics.Realtime.Client.V2;
+using Speechmatics.Realtime.Client.V2.Config;
 
 namespace Speechmatics.Realtime.Microphone
 {
@@ -16,7 +18,7 @@ namespace Speechmatics.Realtime.Microphone
             return JsonConvert.SerializeObject(obj);
         }
 
-        private static string RtUrl => "wss://staging.realtimeappliance.speechmatics.io:9000/";
+        private static string RtUrl => "wss://staging.realtimeappliance.speechmatics.io:9000/v2";
 
         // ReSharper disable once UnusedParameter.Local
         public static void Main(string[] args)
