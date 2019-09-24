@@ -16,7 +16,6 @@ namespace Speechmatics.Realtime.Client.V2
 {
     internal class MessageReader
     {
-        private readonly RtServerVersion _serverVersion;
         private string _lastPartial;
         private int _ackedSequenceNumbers;
         private readonly ClientWebSocket _wsClient;
@@ -24,9 +23,8 @@ namespace Speechmatics.Realtime.Client.V2
         private readonly AutoResetEvent _recognitionStarted;
         private readonly ISmRtApi _api;
 
-        internal MessageReader(ISmRtApi smRtApi, ClientWebSocket client, AutoResetEvent resetEvent, AutoResetEvent recognitionStarted, RtServerVersion serverVersion)
+        internal MessageReader(ISmRtApi smRtApi, ClientWebSocket client, AutoResetEvent resetEvent, AutoResetEvent recognitionStarted)
         {
-            _serverVersion = serverVersion;
             _api = smRtApi;
             _wsClient = client;
             _resetEvent = resetEvent;

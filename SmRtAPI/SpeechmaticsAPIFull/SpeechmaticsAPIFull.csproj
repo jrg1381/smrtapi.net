@@ -64,9 +64,6 @@
     <Compile Include="..\SmRtAPI\Enumerations\OutputFormat.cs">
       <Link>Enumerations\OutputFormat.cs</Link>
     </Compile>
-    <Compile Include="..\SmRtAPI\Enumerations\RtServerVersion.cs">
-      <Link>Enumerations\RtServerVersion.cs</Link>
-    </Compile>
     <Compile Include="..\SmRtAPI\ExtensionMethods.cs">
       <Link>ExtensionMethods.cs</Link>
     </Compile>

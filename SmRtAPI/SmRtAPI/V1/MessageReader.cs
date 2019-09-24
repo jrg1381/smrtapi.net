@@ -16,7 +16,6 @@ namespace Speechmatics.Realtime.Client.V1
 {
     internal class MessageReader
     {
-        private readonly RtServerVersion _serverVersion;
         private string _lastPartial;
         private int _ackedSequenceNumbers;
         private readonly ClientWebSocket _wsClient;
@@ -24,9 +23,8 @@ namespace Speechmatics.Realtime.Client.V1
         private readonly AutoResetEvent _recognitionStarted;
         private readonly ISmRtApi _api;
 
-        internal MessageReader(ISmRtApi smRtApi, ClientWebSocket client, AutoResetEvent resetEvent, AutoResetEvent recognitionStarted, RtServerVersion serverVersion)
+        internal MessageReader(ISmRtApi smRtApi, ClientWebSocket client, AutoResetEvent resetEvent, AutoResetEvent recognitionStarted)
         {
-            _serverVersion = serverVersion;
             _api = smRtApi;
             _wsClient = client;
             _resetEvent = resetEvent;
@@ -74,28 +72,8 @@ namespace Speechmatics.Realtime.Client.V1
                 }
                 case "AddTranscript":
                 {
-                    string transcript;
-                    switch (_serverVersion)
-                    {
-                        // Normally you would use a v1/v2 version of the message reader via some kind of polymorphism, rather
-                        // than have conditional code like this, but that can be done later when I have time.
-                        case RtServerVersion.V1:
-                        {
-                            transcript = jsonObject.Value<string>("results");
-                            _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
-                                    break;
-                        }
-                        case RtServerVersion.V2:
-                        {
-                            transcript = jsonObject["metadata"]["transcript"].Value<string>();
-                            _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
-                            break;
-                        }
-                        default:
-                        {
-                            throw new ArgumentException("Unknown server version enumeration value");
-                        }
-                    }
+                    string transcript = jsonObject.Value<string>("results");
+                    _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
                     _api.Configuration.AddTranscriptCallback?.Invoke(transcript);
                     break;
                 }
