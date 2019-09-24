@@ -33,7 +33,7 @@ namespace Speechmatics.Realtime.Client
         /// <summary>
         /// Action to perform on extended transcript data
         /// </summary>
-        public Action<Messages.AddTranscriptMessage> AddTranscriptMessageCallback { get; set; }
+        public Action<Messages.V2.AddTranscriptMessage> AddTranscriptMessageCallback { get; set; }
         /// <summary>
         /// Action to perform on end of transcript
         /// </summary>
@@ -41,7 +41,7 @@ namespace Speechmatics.Realtime.Client
         /// <summary>
         /// Action to perform on extended partial transcript data
         /// </summary>
-        public Action<Messages.AddPartialTranscriptMessage> AddPartialTranscriptMessageCallback { get; set; }
+        public Action<Messages.V2.AddPartialTranscriptMessage> AddPartialTranscriptMessageCallback { get; set; }
         /// <summary>
         /// Action to perform when a warning message is received
         /// </summary>

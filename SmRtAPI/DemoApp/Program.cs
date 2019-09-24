@@ -45,8 +45,8 @@ namespace DemoApp
                     {
                         OutputLocale = "en-GB",
                         AddTranscriptCallback = s => builder.Append(s),
-                        AddTranscriptMessageCallback = s => Console.WriteLine(ToJson(s.words)),
-                        AddPartialTranscriptMessageCallback = s => Console.WriteLine(ToJson(s)),
+                        AddTranscriptMessageCallback = s => Console.WriteLine(ToJson(s.results)),
+                        //AddPartialTranscriptMessageCallback = s => Console.WriteLine(ToJson(s)),
                         ErrorMessageCallback = s => Console.WriteLine(ToJson(s)),
                         WarningMessageCallback = s => Console.WriteLine(ToJson(s)),
                         CustomDictionaryPlainWords = new[] {"speechmagic"},

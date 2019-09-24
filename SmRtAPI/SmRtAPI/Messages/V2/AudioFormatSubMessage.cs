@@ -32,7 +32,7 @@ namespace Speechmatics.Realtime.Client.Messages.V2
         /// <summary>
         /// Sample rate of audio in Hz
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int sample_rate { get; }
         /// <summary>
         /// Type of audio (e.g. 'raw', 'file' - see docs)

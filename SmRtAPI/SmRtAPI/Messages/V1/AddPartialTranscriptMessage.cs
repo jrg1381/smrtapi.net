@@ -1,4 +1,4 @@
-namespace Speechmatics.Realtime.Client.Messages
+namespace Speechmatics.Realtime.Client.Messages.V1
 {
     /// <summary>
     /// A partial transcript -- later messages may improve on it

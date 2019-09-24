@@ -15,6 +15,7 @@ namespace Speechmatics.Realtime.Client
 {
     internal class MessageWriter
     {
+        private readonly RtServerVersion _serverVersion;
         private readonly ClientWebSocket _wsClient;
         private readonly AutoResetEvent _transcriptionComplete;
         private int _sequenceNumber;
@@ -26,11 +27,13 @@ namespace Speechmatics.Realtime.Client
             ClientWebSocket client,
             AutoResetEvent transcriptionComplete,
             Stream stream,
-            AutoResetEvent recognitionStarted)
+            AutoResetEvent recognitionStarted,
+            RtServerVersion serverVersion)
         {
             _api = smRtApi;
             _stream = stream;
             _recognitionStarted = recognitionStarted;
+            _serverVersion = serverVersion;
             _wsClient = client;
             _transcriptionComplete = transcriptionComplete;
         }
@@ -80,14 +83,17 @@ namespace Speechmatics.Realtime.Client
             var arrayCopy = data.ToArray();
             var finalSectionOffset = 0;
 
-            var msg = new AddDataMessage
+            if (_serverVersion == RtServerVersion.V1)
             {
-                size = data.Count,
-                offset = 0,
-                seq_no = Interlocked.Add(ref _sequenceNumber, 1)
-            };
+                var msg = new AddDataMessage
+                {
+                    size = data.Count,
+                    offset = 0,
+                    seq_no = Interlocked.Add(ref _sequenceNumber, 1)
+                };
 
-            await msg.Send(_wsClient, _api.CancelToken);
+                await msg.Send(_wsClient, _api.CancelToken);
+            }
 
             if (data.Count > messageBlockSize)
             {
@@ -106,19 +112,34 @@ namespace Speechmatics.Realtime.Client
 
         private async Task StartRecognition()
         {
-            var audioFormat = new V2.AudioFormatSubMessage(_api.Configuration.AudioFormat,
-                _api.Configuration.AudioFormatEncoding,
-                _api.Configuration.SampleRate);
-            // var msg = new V1.StartRecognitionMessage(audioFormat, _api.Configuration.Model, OutputFormat.Json, "rt_test");
-            var msg = new V2.StartRecognitionMessage(audioFormat, _api.Configuration.Model);
-            await msg.Send(_wsClient, _api.CancelToken);
+            switch (_serverVersion)
+            {
+                case RtServerVersion.V1:
+                {
+                    var audioFormat = new V1.AudioFormatSubMessage(_api.Configuration.AudioFormat,
+                        _api.Configuration.AudioFormatEncoding,
+                        _api.Configuration.SampleRate);
+                    var msg = new V1.StartRecognitionMessage(audioFormat, _api.Configuration.Model, OutputFormat.Json, "rt_test");
+                    await msg.Send(_wsClient, _api.CancelToken);
+                        break;
+                }
+                case RtServerVersion.V2:
+                {
+                    var audioFormat = new V2.AudioFormatSubMessage(_api.Configuration.AudioFormat,
+                        _api.Configuration.AudioFormatEncoding,
+                        _api.Configuration.SampleRate);
+                    var msg = new V2.StartRecognitionMessage(audioFormat, _api.Configuration.Model);
+                    await msg.Send(_wsClient, _api.CancelToken);
+                    break;
+                }
+            }
         }
 
         private async Task SetRecognitionConfig()
         {
             var additionalVocab = new AdditionalVocabSubMessage(_api.Configuration.CustomDictionaryPlainWords, _api.Configuration.CustomDictionarySoundsLikes);
 
-            var msg = new SetRecognitionConfigMessage(
+            var msg = new V2.SetRecognitionConfigMessage(
                 additionalVocab,
                 _api.Configuration.OutputLocale,
                 _api.Configuration.DynamicTranscriptConfiguration

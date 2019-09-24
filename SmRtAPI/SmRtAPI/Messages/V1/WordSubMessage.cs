@@ -1,4 +1,4 @@
-namespace Speechmatics.Realtime.Client.Messages
+namespace Speechmatics.Realtime.Client.Messages.V1
 {
     /// <summary>
     /// Data for an individual word in a transcript message

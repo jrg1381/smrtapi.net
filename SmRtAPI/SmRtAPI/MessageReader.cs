@@ -7,13 +7,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Speechmatics.Realtime.Client.Enumerations;
 using Speechmatics.Realtime.Client.Interfaces;
 using Speechmatics.Realtime.Client.Messages;
+using V1 = Speechmatics.Realtime.Client.Messages.V1;
+using V2 = Speechmatics.Realtime.Client.Messages.V2;
+
 
 namespace Speechmatics.Realtime.Client
 {
     internal class MessageReader
     {
+        private readonly RtServerVersion _serverVersion;
         private string _lastPartial;
         private int _ackedSequenceNumbers;
         private readonly ClientWebSocket _wsClient;
@@ -21,8 +26,9 @@ namespace Speechmatics.Realtime.Client
         private readonly AutoResetEvent _recognitionStarted;
         private readonly ISmRtApi _api;
 
-        internal MessageReader(ISmRtApi smRtApi, ClientWebSocket client, AutoResetEvent resetEvent, AutoResetEvent recognitionStarted)
+        internal MessageReader(ISmRtApi smRtApi, ClientWebSocket client, AutoResetEvent resetEvent, AutoResetEvent recognitionStarted, RtServerVersion serverVersion)
         {
+            _serverVersion = serverVersion;
             _api = smRtApi;
             _wsClient = client;
             _resetEvent = resetEvent;
@@ -52,7 +58,7 @@ namespace Speechmatics.Realtime.Client
             var messageAsString = Encoding.UTF8.GetString(subset.ToArray());
             var jsonObject = JObject.Parse(messageAsString);
 
-            Trace.WriteLine(messageAsString);
+            Trace.WriteLine("55: " + messageAsString);
 
             switch (jsonObject.Value<string>("message"))
             {
@@ -70,15 +76,35 @@ namespace Speechmatics.Realtime.Client
                 }
                 case "AddTranscript":
                 {
-                    string transcript = jsonObject.Value<string>("transcript");
+                    string transcript;
+                    switch (_serverVersion)
+                    {
+                        // Normally you would use a v1/v2 version of the message reader via some kind of polymorphism, rather
+                        // than have conditional code like this, but that can be done later when I have time.
+                        case RtServerVersion.V1:
+                        {
+                            transcript = jsonObject.Value<string>("results");
+                            //_api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<V1.AddTranscriptMessage>(messageAsString));
+                                    break;
+                        }
+                        case RtServerVersion.V2:
+                        {
+                            transcript = jsonObject["metadata"]["transcript"].Value<string>();
+                            _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<V2.AddTranscriptMessage>(messageAsString));
+                            break;
+                        }
+                        default:
+                        {
+                            throw new ArgumentException("Unknown server version enumeration value");
+                        }
+                    }
                     _api.Configuration.AddTranscriptCallback?.Invoke(transcript);
-                    _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
                     break;
                 }
                 case "AddPartialTranscript":
                 {
                     _lastPartial = jsonObject.Value<string>("transcript");
-                    _api.Configuration.AddPartialTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddPartialTranscriptMessage>(messageAsString));
+                    _api.Configuration.AddPartialTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<V2.AddPartialTranscriptMessage>(messageAsString));
                     break;
                 }
                 case "EndOfTranscript":

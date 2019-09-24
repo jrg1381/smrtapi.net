@@ -50,6 +50,16 @@ namespace Speechmatics.Realtime.Client
             CancelToken = src.Token;
         }
 
+        private Enumerations.RtServerVersion ServerVersion(Uri url)
+        {
+            if (url.AbsolutePath.EndsWith(("/v2")))
+            {
+                return Enumerations.RtServerVersion.V2;
+            }
+
+            return Enumerations.RtServerVersion.V1;
+        }
+
         /// <summary>
         /// Start the message loop and do not return until the file is transcribed
         /// </summary>
@@ -63,6 +73,8 @@ namespace Speechmatics.Realtime.Client
                 {
                     using (var wsClient = new ClientWebSocket())
                     {
+                        var serverVersion = ServerVersion(WsUrl);
+
                         if (Configuration.Insecure)
                         {
                             // TODO: Support this, but .NET Standard doesn't implement insecure websockets yet
@@ -84,7 +96,7 @@ namespace Speechmatics.Realtime.Client
                         /* The reading loop */
                         var t1 = Task.Factory.StartNew(async () =>
                         {
-                            var reader = new MessageReader(this, wsClient, transcriptionComplete, recognitionStarted);
+                            var reader = new MessageReader(this, wsClient, transcriptionComplete, recognitionStarted, serverVersion);
                             await reader.Start();
 
                         }, CancelToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
@@ -92,7 +104,7 @@ namespace Speechmatics.Realtime.Client
                         /* The writing loop */
                         var t2 = Task.Factory.StartNew(async () =>
                         {
-                            var writer = new MessageWriter(this, wsClient, transcriptionComplete, _stream, recognitionStarted);
+                            var writer = new MessageWriter(this, wsClient, transcriptionComplete, _stream, recognitionStarted, serverVersion);
                             await writer.Start();
                         }, CancelToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
