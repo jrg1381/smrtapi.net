@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Speechmatics.Realtime.Client.Enumerations;
-using Speechmatics.Realtime.Client.Interfaces;
 using Speechmatics.Realtime.Client.Messages;
-using V1 = Speechmatics.Realtime.Client.Messages.V1;
-using V2 = Speechmatics.Realtime.Client.Messages.V2;
+using Speechmatics.Realtime.Client.V1.Interfaces;
+using Speechmatics.Realtime.Client.V1.Messages;
 
-
-namespace Speechmatics.Realtime.Client
+namespace Speechmatics.Realtime.Client.V1
 {
     internal class MessageReader
     {
@@ -84,13 +82,13 @@ namespace Speechmatics.Realtime.Client
                         case RtServerVersion.V1:
                         {
                             transcript = jsonObject.Value<string>("results");
-                            //_api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<V1.AddTranscriptMessage>(messageAsString));
+                            _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
                                     break;
                         }
                         case RtServerVersion.V2:
                         {
                             transcript = jsonObject["metadata"]["transcript"].Value<string>();
-                            _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<V2.AddTranscriptMessage>(messageAsString));
+                            _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
                             break;
                         }
                         default:
@@ -104,7 +102,7 @@ namespace Speechmatics.Realtime.Client
                 case "AddPartialTranscript":
                 {
                     _lastPartial = jsonObject.Value<string>("transcript");
-                    _api.Configuration.AddPartialTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<V2.AddPartialTranscriptMessage>(messageAsString));
+                    _api.Configuration.AddPartialTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddPartialTranscriptMessage>(messageAsString));
                     break;
                 }
                 case "EndOfTranscript":

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Speechmatics.Realtime.Client;
+using Speechmatics.Realtime.Client.V2;
 using Newtonsoft.Json;
+using Speechmatics.Realtime.Client.V2.Config;
 
 namespace DemoApp
 {

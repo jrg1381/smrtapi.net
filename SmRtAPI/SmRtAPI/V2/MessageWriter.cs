@@ -6,12 +6,11 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Speechmatics.Realtime.Client.Enumerations;
-using Speechmatics.Realtime.Client.Interfaces;
 using Speechmatics.Realtime.Client.Messages;
-using V2 = Speechmatics.Realtime.Client.Messages.V2;
-using V1 = Speechmatics.Realtime.Client.Messages.V1;
+using Speechmatics.Realtime.Client.V2.Interfaces;
+using Speechmatics.Realtime.Client.V2.Messages;
 
-namespace Speechmatics.Realtime.Client
+namespace Speechmatics.Realtime.Client.V2
 {
     internal class MessageWriter
     {
@@ -116,19 +115,19 @@ namespace Speechmatics.Realtime.Client
             {
                 case RtServerVersion.V1:
                 {
-                    var audioFormat = new V1.AudioFormatSubMessage(_api.Configuration.AudioFormat,
+                    var audioFormat = new V1.Messages.AudioFormatSubMessage(_api.Configuration.AudioFormat,
                         _api.Configuration.AudioFormatEncoding,
                         _api.Configuration.SampleRate);
-                    var msg = new V1.StartRecognitionMessage(audioFormat, _api.Configuration.Model, OutputFormat.Json, "rt_test");
+                    var msg = new V1.Messages.StartRecognitionMessage(audioFormat, _api.Configuration.Model, OutputFormat.Json, "rt_test");
                     await msg.Send(_wsClient, _api.CancelToken);
                         break;
                 }
                 case RtServerVersion.V2:
                 {
-                    var audioFormat = new V2.AudioFormatSubMessage(_api.Configuration.AudioFormat,
+                    var audioFormat = new V2.Messages.AudioFormatSubMessage(_api.Configuration.AudioFormat,
                         _api.Configuration.AudioFormatEncoding,
                         _api.Configuration.SampleRate);
-                    var msg = new V2.StartRecognitionMessage(audioFormat, _api.Configuration.Model);
+                    var msg = new V2.Messages.StartRecognitionMessage(audioFormat, _api.Configuration.Model);
                     await msg.Send(_wsClient, _api.CancelToken);
                     break;
                 }
@@ -139,7 +138,7 @@ namespace Speechmatics.Realtime.Client
         {
             var additionalVocab = new AdditionalVocabSubMessage(_api.Configuration.CustomDictionaryPlainWords, _api.Configuration.CustomDictionarySoundsLikes);
 
-            var msg = new V2.SetRecognitionConfigMessage(
+            var msg = new SetRecognitionConfigMessage(
                 additionalVocab,
                 _api.Configuration.OutputLocale,
                 _api.Configuration.DynamicTranscriptConfiguration

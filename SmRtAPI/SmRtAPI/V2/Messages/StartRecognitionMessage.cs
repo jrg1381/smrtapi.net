@@ -1,4 +1,6 @@
-﻿namespace Speechmatics.Realtime.Client.Messages.V2
+﻿using Speechmatics.Realtime.Client.Messages;
+
+namespace Speechmatics.Realtime.Client.V2.Messages
 {
     internal class StartRecognitionMessage : BaseMessage
     {
