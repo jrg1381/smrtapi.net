@@ -29,7 +29,7 @@ namespace Speechmatics.Realtime.Microphone
                 // This is an example, but experiment shows that making the value too low will
                 // result in incomplete buffers to send to the RT appliance, leading to bad
                 // transcripts.
-                waveSource.BufferMilliseconds = 2500;
+                waveSource.BufferMilliseconds = 100;
                 waveSource.DataAvailable += WaveSourceOnDataAvailable;
                 waveSource.StartRecording();
             });
@@ -50,6 +50,7 @@ namespace Speechmatics.Realtime.Microphone
                         ErrorMessageCallback = s => Console.WriteLine(ToJson(s)),
                         WarningMessageCallback = s => Console.WriteLine(ToJson(s)),
                         Insecure = true,
+                        BlockSize = 16384
                     };
 
                     var api = new SmRtApi(RtUrl,
