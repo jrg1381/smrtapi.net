@@ -62,6 +62,11 @@ namespace Speechmatics.Realtime.Client
         /// Dynamic transcript configuration
         /// </summary>
         public DynamicTranscriptConfiguration DynamicTranscriptConfiguration { get; set; }
+        /// <summary>
+        /// Data block size to send in one message. Overly small or large values can overload the server, something like 8192
+        /// is usually safe. Large block sizes can affect latency.
+        /// </summary>
+        public int BlockSize { get; set; }
 
         /// <summary>
         /// Constructor
@@ -94,6 +99,7 @@ namespace Speechmatics.Realtime.Client
             SampleRate = sampleRate;
             AudioFormat = audioFormatType;
             AudioFormatEncoding = audioFormatEncoding;
+            BlockSize = 2048;
         }
 
         /// <summary>
@@ -106,6 +112,7 @@ namespace Speechmatics.Realtime.Client
             SampleRate = 0;
             AudioFormat = AudioFormatType.File;
             AudioFormatEncoding = AudioFormatEncoding.File;
+            BlockSize = 2048;
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Speechmatics.Realtime.Client.V1
                 await SetRecognitionConfig();
             }
 
-            var streamBuffer = new byte[2048];
+            var streamBuffer = new byte[_api.Configuration.BlockSize];
             int bytesRead;
 
             while ((bytesRead = _stream.Read(streamBuffer, 0, streamBuffer.Length)) > 0 && !_transcriptionComplete.WaitOne(0))

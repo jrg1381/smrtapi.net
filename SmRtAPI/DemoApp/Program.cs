@@ -65,6 +65,7 @@ namespace DemoApp
                         CustomDictionaryPlainWords = new[] {"speechmagic"},
                         CustomDictionarySoundsLikes = new Dictionary<string, IEnumerable<string>>(),
                         Insecure = true,
+                        BlockSize = 8192,
                     };
 
                     // We can do this here, or earlier. It's not used until .Run() is called on the API object.
