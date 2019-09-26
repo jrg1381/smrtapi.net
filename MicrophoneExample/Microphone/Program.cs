@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using Newtonsoft.Json;
-using Speechmatics.Realtime.Client;
 using Speechmatics.Realtime.Client.Enumerations;
 using Speechmatics.Realtime.Client.V2;
 using Speechmatics.Realtime.Client.V2.Config;
@@ -13,7 +12,7 @@ namespace Speechmatics.Realtime.Microphone
 {
     public class Program
     {
-        private static readonly ProducerConsumerStream AudioStream = new ProducerConsumerStream();
+        private static readonly BlockingStream AudioStream = new BlockingStream(1024*1024*10);
 
         private static string ToJson(object obj)
         {
