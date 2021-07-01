@@ -14,7 +14,7 @@ namespace Speechmatics.Realtime.Client.V2.Messages
             )
         {
             transcription_config = new Dictionary<string, object>();
-            transcription_config["language"] = "en";
+
             if (additionalVocab != null)
             {
                 transcription_config["additional_vocab"] = additionalVocab.Data;
