@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Speechmatics.Realtime.Client.Messages;
-using Speechmatics.Realtime.Client.V1.Interfaces;
-using Speechmatics.Realtime.Client.V1.Messages;
+using Speechmatics.Realtime.Client.Interfaces;
 
-namespace Speechmatics.Realtime.Client.V1
+namespace Speechmatics.Realtime.Client
 {
     internal class MessageReader
     {
@@ -75,7 +74,7 @@ namespace Speechmatics.Realtime.Client.V1
                     _recognitionStarted.Set();
                     break;
                 }
-                case "DataAdded":
+                case "AudioAdded":
                 {
                     // Log the ack
                     Interlocked.Increment(ref _ackedSequenceNumbers);
@@ -83,8 +82,9 @@ namespace Speechmatics.Realtime.Client.V1
                 }
                 case "AddTranscript":
                 {
-                    string transcript = jsonObject.Value<string>("transcript");
-                    _api.Configuration.AddTranscriptMessageCallback?.Invoke(JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
+                    string transcript = jsonObject["metadata"]["transcript"].Value<string>();
+                    _api.Configuration.AddTranscriptMessageCallback?.Invoke(
+                        JsonConvert.DeserializeObject<AddTranscriptMessage>(messageAsString));
                     _api.Configuration.AddTranscriptCallback?.Invoke(transcript);
                     break;
                 }
@@ -113,7 +113,7 @@ namespace Speechmatics.Realtime.Client.V1
                 }
                 default:
                 {
-                    Trace.WriteLine("Default: "+ messageAsString);
+                    Trace.WriteLine(messageAsString);
                     break;
                 }
             }

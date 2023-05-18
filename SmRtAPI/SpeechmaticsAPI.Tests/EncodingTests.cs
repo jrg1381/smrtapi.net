@@ -3,9 +3,9 @@ using System.IO;
 using NUnit.Framework;
 using Speechmatics.Realtime.Client.Enumerations;
 using Speechmatics.Realtime.Client.Messages;
-using Speechmatics.Realtime.Client.V2;
-using Speechmatics.Realtime.Client.V2.Config;
-using Speechmatics.Realtime.Client.V2.Messages;
+using Speechmatics.Realtime.Client;
+using Speechmatics.Realtime.Client.Config;
+using Speechmatics.Realtime.Client.Messages;
 
 namespace SpeechmaticsAPI.Tests
 {
@@ -36,8 +36,8 @@ namespace SpeechmaticsAPI.Tests
         {
             // This is just a sanity check for now
             var expected = "{\"message\":\"StartRecognition\",\"audio_format\":{\"sample_rate\":44100,\"type\":\"raw\",\"encoding\":\"pcm_s16le\"},\"transcription_config\":{\"language\":\"en-US\"}}";
-            var audioFormat = new Speechmatics.Realtime.Client.V2.Messages.AudioFormatSubMessage(AudioFormatType.Raw, AudioFormatEncoding.PcmS16Le, 44100);
-            var msg = new Speechmatics.Realtime.Client.V2.Messages.StartRecognitionMessage(audioFormat, "en-US");
+            var audioFormat = new AudioFormatSubMessage(AudioFormatType.Raw, AudioFormatEncoding.PcmS16Le, 44100);
+            var msg = new StartRecognitionMessage(audioFormat, "en-US");
             Assert.AreEqual(expected, msg.AsJson(), "Message serialization unexpected");
         }
 
@@ -64,7 +64,7 @@ namespace SpeechmaticsAPI.Tests
             var x = new Dictionary<string, IEnumerable<string>> { ["foo"] = new List<string> { "fooo", "barrr" } };
 
             var config = new AdditionalVocabSubMessage(new[] { "foo" }, x);
-            var msg = new Speechmatics.Realtime.Client.V2.Messages.SetRecognitionConfigMessage(config,"en-GB");
+            var msg = new SetRecognitionConfigMessage(config,"en-GB");
             var y = msg.AsJson();
             Assert.AreEqual(expected, msg.AsJson(), "Message serialization unexpected");
         }
